@@ -1,0 +1,33 @@
+# Ironhack note - This file is for running in docker compose with prebuilt images
+# Use these if you're stuck, or if you want to start slowly migrating from external images into your own.
+
+services:
+  vote:
+    image: sribeeram/voting-app:v1
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+    ports:
+      - "80:80"
+    extra_hosts:
+      - "redis:10.10.2.161"   
+    networks:
+      - back-tier
+
+  result:
+    image: sribeeram/result-app:v1
+    environment:
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_DATABASE: ${PG_DATABASE}
+      
+    ports:
+      - "81:80"
+
+    networks:
+      - back-tier
+
+networks:
+  back-tier:
